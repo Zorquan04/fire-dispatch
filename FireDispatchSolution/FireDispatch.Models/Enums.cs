@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Models;
 
-/// Typ zdarzenia: PZ (pożar), AF (alarm fałszywy), MZ (miejscowe zagrożenie)
+// Typ zdarzenia: PZ (pożar), AF (alarm fałszywy), MZ (miejscowe zagrożenie)
 public enum EventType
 {
     Pz,
@@ -8,7 +8,7 @@ public enum EventType
     Mz
 }
 
-/// Stan pojazdu — proste etykiety, będziemy rozszerzać później
+// Stan pojazdu — proste etykiety, będziemy rozszerzać później
 public enum VehicleState
 {
     Free,       // pojazd dostępny

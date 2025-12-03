@@ -2,7 +2,7 @@
 
 namespace FireDispatch.Observer;
 
-/// SKKM – nadzoruje jednostki PSP, powiadamia o nowych zdarzeniach
+// SKKM – nadzoruje jednostki PSP, powiadamia o nowych zdarzeniach
 public class CommandCenter : ISubject
 {
     private readonly List<IObserver> _observers = new();
@@ -17,7 +17,7 @@ public class CommandCenter : ISubject
             obs.Update(message);
     }
     
-    /// Metoda wywołująca zdarzenie i powiadamiająca jednostki
+    // Metoda wywołująca zdarzenie i powiadamiająca jednostki
     public void NewEvent(string eventInfo)
     {
         Console.WriteLine($"[SKKM] Nowe zdarzenie: {eventInfo}");

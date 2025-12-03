@@ -3,7 +3,7 @@ using FireDispatch.Models;
 
 namespace FireDispatch.Context
 {
-    /// Dispatcher — kontekst strategii dysponowania
+    // Dispatcher — kontekst strategii dysponowania
     public class DispatchContext(IStrategy strategy, List<Unit> units)
     {
         private IStrategy _strategy = strategy;

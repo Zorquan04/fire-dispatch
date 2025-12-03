@@ -4,8 +4,8 @@ using FireDispatch.Models;
 
 namespace FireDispatch.Observer;
 
-/// Observer jednostki PSP – reaguje na powiadomienia SKKM
-/// Teraz przy powiadomieniu może wybrać pojazdy i wysłać je do zdarzenia
+// Observer jednostki PSP – reaguje na powiadomienia SKKM
+// Teraz przy powiadomieniu może wybrać pojazdy i wysłać je do zdarzenia
 public class UnitObserver(Unit unit, DispatchContext dispatcher) : IObserver
 {
     public void Update(string message)

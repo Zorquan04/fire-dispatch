@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Interfaces;
 
-public interface IAggregate<T>
+public interface IAggregate<out T>
 {
     IIterator<T> GetIterator();
 }

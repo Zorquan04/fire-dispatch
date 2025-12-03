@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Interfaces;
 
-public interface IIterator<T>
+public interface IIterator<out T>
 {
     bool HasNext();
     T Next();

@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Models;
 
-/// Reprezentuje pojazd ratowniczy. Pojazdy należą do jednostki (UnitId).
+// Reprezentuje pojazd ratowniczy. Pojazdy należą do jednostki (UnitId).
 public class Vehicle(string name, Guid unitId)
 {
     private Guid Id { get; } = Guid.NewGuid();

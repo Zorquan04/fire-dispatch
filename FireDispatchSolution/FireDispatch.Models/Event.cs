@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Models;
 
-/// Reprezentuje zgłoszenie/zdarzenie wpływające do SKKM
+// Reprezentuje zgłoszenie/zdarzenie wpływające do SKKM
 public class Event(EventType type, Location location)
 {
     private Guid Id { get; } = Guid.NewGuid();

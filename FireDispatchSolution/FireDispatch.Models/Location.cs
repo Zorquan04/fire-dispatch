@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Models;
 
-/// Reprezentuje położenie w stopniach dziesiętnych (WGS-84)
+// Reprezentuje położenie w stopniach dziesiętnych (WGS-84)
 public record Location(double Latitude, double Longitude)
 {
 // Prosta metoda na obliczenie przybliżonej odległości euklidesowej w stopniach

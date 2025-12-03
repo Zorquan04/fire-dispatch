@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Models;
 
-/// Jednostka ratownicza (stacja) zawierająca listę pojazdów i położenie.
+// Jednostka ratownicza (stacja) zawierająca listę pojazdów i położenie.
 public class Unit(string name, Location location)
 {
     public Guid Id { get; } = Guid.NewGuid();
