@@ -3,7 +3,7 @@
 /// Reprezentuje zgłoszenie/zdarzenie wpływające do SKKM
 public class Event(EventType type, Location location)
 {
-    public Guid Id { get; } = Guid.NewGuid();
+    private Guid Id { get; } = Guid.NewGuid();
     public EventType Type { get; set; } = type;
     public Location Location { get; set; } = location;
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;

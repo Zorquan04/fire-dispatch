@@ -4,17 +4,13 @@ using FireDispatch.Models;
 namespace FireDispatch.Context
 {
     /// Dispatcher — kontekst strategii dysponowania
-    public class DispatchContext(IStrategy strategy, IEnumerable<Unit> units)
+    public class DispatchContext(IStrategy strategy, List<Unit> units)
     {
-        public IStrategy Strategy { get; private set; } = strategy; // aktualnie używana strategia
+        private IStrategy _strategy = strategy;
 
-        // wszystkie jednostki PSP
-        public void SetStrategy(IStrategy strategy) => Strategy = strategy;
-        
-        /// Zwraca listę pojazdów do wysłania na zdarzenie, delegując do strategii
-        public IEnumerable<Vehicle> Dispatch(Event evt, int requiredCount)
-        {
-            return Strategy.SelectVehicles(units, evt, requiredCount);
-        }
+        public void SetStrategy(IStrategy strategy) => _strategy = strategy;
+
+        // Zwraca listę pojazdów do wysłania na zdarzenie, delegując do strategii
+        public List<Vehicle> Dispatch(Event evt, int requiredCount) => _strategy.SelectVehicles(units, evt, requiredCount).ToList();
     }
 }

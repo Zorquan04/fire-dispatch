@@ -1,6 +1,8 @@
 ﻿using FireDispatch.Interfaces;
 using FireDispatch.Models;
 
+
+namespace FireDispatch.Strategy;
 /// Dispatcher (kontekst) — używa strategii do wyboru pojazdów.
 public class Dispatcher(IStrategy strategy)
 {

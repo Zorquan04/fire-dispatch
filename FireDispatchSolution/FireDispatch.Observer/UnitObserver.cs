@@ -14,7 +14,7 @@ public class UnitObserver(Unit unit, DispatchContext dispatcher) : IObserver
 
         // Przykładowe zdarzenie powiązane z wiadomością
         var evt = new Event(EventType.Pz, unit.Location); // dla demo – zdarzenie przy lokalizacji jednostki
-        var vehicles = dispatcher.Strategy.SelectVehicles([unit], evt, 2); // np. 2 pojazdy
+        var vehicles = dispatcher.Dispatch(evt, 2); // np. 2 pojazdy
 
         foreach (var v in vehicles)
         {

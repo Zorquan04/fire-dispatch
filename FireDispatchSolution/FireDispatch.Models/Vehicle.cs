@@ -3,7 +3,7 @@
 /// Reprezentuje pojazd ratowniczy. Pojazdy należą do jednostki (UnitId).
 public class Vehicle(string name, Guid unitId)
 {
-    public Guid Id { get; } = Guid.NewGuid();
+    private Guid Id { get; } = Guid.NewGuid();
     public string Name { get; set; } = name;
     public VehicleState State { get; private set; } = VehicleState.Free;
     public Guid UnitId { get; set; } = unitId;

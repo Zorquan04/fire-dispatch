@@ -1,54 +1,41 @@
 ﻿using FireDispatch.Context;
 using FireDispatch.Models;
-using FireDispatch.Observer;
+using FireDispatch.Simulation;
 
 namespace FireDispatch.App;
 
 /// Główny punkt wejścia aplikacji
 internal static class Program
 {
-    private static void Main()
+    private static async Task Main()
     {
         Console.WriteLine("FireDispatch — demo tworzenia jednostek");
 
-        // Tworzymy jednostki
-        var jrg1 = new Unit("JRG-1", new Location(50.0647, 19.9450));
-        var jrg2 = new Unit("JRG-2", new Location(50.0700, 19.9333));
+        var unit1 = new Unit("JRG-1", new Location(50.05, 19.94));
+        var unit2 = new Unit("JRG-2", new Location(50.04, 19.92));
 
-        // Dodajemy pojazdy
+        // dodajemy 5 pojazdów do każdej jednostki
         for (int i = 1; i <= 5; i++)
         {
-            jrg1.Vehicles.Add(new Vehicle($"JRG1-V{i}", jrg1.Id));
-            jrg2.Vehicles.Add(new Vehicle($"JRG2-V{i}", jrg2.Id));
+            unit1.Vehicles.Add(new Vehicle($"JRG1-V{i}", unit1.Id));
+            unit2.Vehicles.Add(new Vehicle($"JRG2-V{i}", unit2.Id));
         }
 
-        // Tworzymy kontekst strategii i dispatcher
-        var dispatcher = new DispatchContext(new NearestFirstStrategy(), [jrg1, jrg2]);
+        var units = new List<Unit> { unit1, unit2 };
+        var dispatcher = new DispatchContext(new NearestFirstStrategy(), units);
+        var simulator = new EventSimulator(dispatcher);
 
-        // Tworzymy obserwatorów jednostek
-        var observer1 = new UnitObserver(jrg1, dispatcher);
-        var observer2 = new UnitObserver(jrg2, dispatcher);
+        // kilka przykładowych zdarzeń
+        var events = new List<Event>
+        {
+            new Event(EventType.Pz, new Location(50.045, 19.93)),
+            new Event(EventType.Mz, new Location(50.048, 19.935))
+        };
 
-        // Tworzymy SKKM (Subject)
-        var skkm = new CommandCenter();
-        skkm.Attach(observer1);
-        skkm.Attach(observer2);
-
-        // Wywołanie zdarzenia – jednostki same wybierają pojazdy i wysyłają
-        skkm.NewEvent("Pożar w okolicy Placu Matejki PZ");
-        
-        var vehicle = new Vehicle("JRG1-V1", Guid.NewGuid());
-
-        Console.WriteLine(vehicle); // Free
-        vehicle.Assign();
-        Console.WriteLine(vehicle); // Assigned
-        vehicle.StartTravel();
-        Console.WriteLine(vehicle); // EnRoute
-        vehicle.Arrive();
-        Console.WriteLine(vehicle); // OnScene
-        vehicle.Return();
-        Console.WriteLine(vehicle); // Returning
-        vehicle.Free();
-        Console.WriteLine(vehicle); // Free
+        // asynchroniczne wywołanie symulacji
+        foreach (var evt in events)
+        {
+            await simulator.HandleEventAsync(evt);
+        }
     }
 }
