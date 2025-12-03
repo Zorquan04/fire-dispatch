@@ -1,12 +1,21 @@
-﻿using FireDispatch.Interfaces;
+﻿using System.Collections;
+using FireDispatch.Interfaces;
 using FireDispatch.Models;
 
 namespace FireDispatch.Collections;
 
-public class VehicleCollection(List<Vehicle> vehicles) : IAggregate<Vehicle>
+public class VehicleCollection(List<Vehicle> vehicles) : IAggregate<Vehicle>, IEnumerable
 {
     public IIterator<Vehicle> GetIterator() => new VehicleIterator(vehicles);
 
+    public IEnumerator<Vehicle> GetEnumerator()
+    {
+        foreach (var v in vehicles)
+            yield return v;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    
     private class VehicleIterator(List<Vehicle> vehicles) : IIterator<Vehicle>
     {
         private int _index;

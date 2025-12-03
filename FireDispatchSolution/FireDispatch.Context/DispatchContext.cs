@@ -7,6 +7,7 @@ namespace FireDispatch.Context
     // Dispatcher — kontekst strategii dysponowania
     public class DispatchContext(IStrategy strategy, UnitCollection units)
     {
+
         // Zwraca listę pojazdów do wysłania na zdarzenie, delegując do strategii
         public List<Vehicle> Dispatch(Event evt, int requiredCount)
         {

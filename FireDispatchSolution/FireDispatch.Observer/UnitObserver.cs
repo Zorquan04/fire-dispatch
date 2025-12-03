@@ -6,11 +6,11 @@ namespace FireDispatch.Observer;
 
 // Observer jednostki PSP – reaguje na powiadomienia SKKM
 // Teraz przy powiadomieniu może wybrać pojazdy i wysłać je do zdarzenia
-public class UnitObserver(Unit unit, DispatchContext dispatcher) : IObserver
+public class UnitObserver(Unit unit, DispatchContext dispatcher, IObserver logger) : IObserver
 {
-    public void Update(string message)
+    public void Update(string message, VehicleState? state = null)
     {
-        Console.WriteLine($"[{unit.Name}] Otrzymano powiadomienie: {message}");
+        logger.Update($"[{unit.Name}] {message}", state);
 
         // Przykładowe zdarzenie powiązane z wiadomością
         var evt = new Event(EventType.Pz, unit.Location); // dla demo – zdarzenie przy lokalizacji jednostki
@@ -18,8 +18,20 @@ public class UnitObserver(Unit unit, DispatchContext dispatcher) : IObserver
 
         foreach (var v in vehicles)
         {
-            Console.WriteLine($"[{unit.Name}] Wysyłam pojazd {v.Name} do zdarzenia {evt.Type}");
-            v.Assign(); // zmiana stanu pojazdu
+            v.Assign();
+            logger.Update($"Wysyłam pojazd {v.Name} do zdarzenia {evt.Type}", v.State);
+
+            v.StartTravel();
+            logger.Update($"Pojazd {v.Name} w drodze", v.State);
+
+            v.Arrive();
+            logger.Update($"Pojazd {v.Name} na miejscu zdarzenia", v.State);
+
+            v.Return();
+            logger.Update($"Pojazd {v.Name} wraca do jednostki", v.State);
+
+            v.Free();
+            logger.Update($"Pojazd {v.Name} dostępny", v.State);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace FireDispatch.Simulation;
 public class EventSimulator(DispatchContext dispatcher)
 {
     private readonly List<IObserver> _observers = [];
-    private readonly Random _rng = new();
 
     // Statystyki
     private int _totalEvents;
@@ -17,70 +16,129 @@ public class EventSimulator(DispatchContext dispatcher)
 
     public void Attach(IObserver observer) => _observers.Add(observer);
     public void Detach(IObserver observer) => _observers.Remove(observer);
-
-    private void Notify(string message)
+    
+    private void Notify(string message, VehicleState? state = null)
     {
         foreach (var obs in _observers)
-            obs.Update(message);
+            obs.Update(message, state);
     }
 
     public async Task HandleEventAsync(Event evt)
     {
-        _totalEvents++;
-        Notify($"Nowe zdarzenie: {evt.Type} w [{evt.Location.Latitude:F5}, {evt.Location.Longitude:F5}]");
+        var rand = new Random();
+        var eventStartTime = DateTime.Now;
 
-        var vehicles = dispatcher.Dispatch(evt, evt.Type == EventType.Pz ? 3 : 2);
+        _totalEvents++;
+
+        Notify($"--- NOWE ZDARZENIE: {evt.Type} ---");
+        Notify($"Lokalizacja: {evt.Location.Latitude}, {evt.Location.Longitude}");
+
+        int requiredCount = evt.Type switch
+        {
+            EventType.Pz => 3, // Pożar – więcej sił
+            EventType.Mz => 2, // Mniejsze zdarzenie
+            EventType.Af => 0, // Fałszywy alarm z góry
+            _ => 2
+        };
+
+        // alarm fałszywy natychmiast z polecenia EventType.Af
+        if (requiredCount == 0)
+        {
+            Notify("Zgłoszenie oznaczone jako FAŁSZYWE – brak wysyłania pojazdów.");
+            return;
+        }
+
+        // pobieramy pojazdy z dyspozytora
+        var vehicles = dispatcher.Dispatch(evt, requiredCount);
+
         if (!vehicles.Any())
         {
-            Notify("Brak wolnych pojazdów!");
+            Notify("Brak wolnych pojazdów – zgłoszenie czeka lub przekazać do innej jednostki (Etap 2).");
             return;
         }
 
         _totalVehiclesDispatched += vehicles.Count;
-
         var vehicleCollection = new VehicleCollection(vehicles);
-        var vehicleIterator = vehicleCollection.GetIterator();
 
-        while (vehicleIterator.HasNext())
+        // 1) przypisanie pojazdów
+        foreach (var v in vehicleCollection)
         {
-            var v = vehicleIterator.Next();
             v.Assign();
-            Notify($"Pojazd {v.Name} wysłany do zdarzenia {evt.Type}");
+            Notify($"Pojazd {v.Name} przypisany do zdarzenia {evt.Type}", v.State);
         }
 
-        int travelTime = _rng.Next(0, 3000);
-        await Task.Delay(travelTime);
-        _totalTimeMs += travelTime;
-        Notify($"Pojazdy dotarły na miejsce po {travelTime} ms");
+        // 2) wyjazd w drogę
+        foreach (var v in vehicleCollection)
+        {
+            v.StartTravel();
+            Notify($"Pojazd {v.Name} wyjechał – jedzie na miejsce", v.State);
+        }
 
-        bool falseAlarm = _rng.NextDouble() < 0.05;
+        int travelTimeMs = rand.Next(1000, 4000); // 1-4 sek
+        Notify($"Czas dojazdu: {travelTimeMs / 1000.0:F1}s");
+        await Task.Delay(travelTimeMs);
+
+        // 3) Losowa szansa FAŁSZYWEGO alarmu dopiero po dojeździe (5%)
+        bool falseAlarm = rand.NextDouble() < 0.05;
         if (falseAlarm)
         {
-            Notify("Alarm fałszywy! Pojazdy wracają...");
-            int returnTime = _rng.Next(0, 3000);
-            await Task.Delay(returnTime);
-            _totalTimeMs += returnTime;
-        }
-        else
-        {
-            int actionTime = _rng.Next(5000, 25001);
-            Notify($"Akcja trwa {actionTime / 1000.0:F1} s");
-            await Task.Delay(actionTime);
-            _totalTimeMs += actionTime;
+            Notify("Zgłoszenie okazało się FAŁSZYWE po przybyciu jednostki!");
+            Notify("Oddział zawraca do bazy bez podejmowania działań.");
 
-            int returnTime = _rng.Next(0, 3000);
-            await Task.Delay(returnTime);
-            _totalTimeMs += returnTime;
-            Notify($"Pojazdy wróciły do jednostki po {returnTime} ms");
+            foreach (var v in vehicleCollection)
+            {
+                v.Return();
+                Notify($"Pojazd {v.Name} wraca do jednostki", v.State);
+            }
+
+            int backTime = rand.Next(1000, 4000);
+            Notify($"Czas powrotu: {backTime/1000.0:F1}s");
+            await Task.Delay(backTime);
+
+            foreach (var v in vehicleCollection)
+            {
+                v.Free();
+                Notify($"{v.Name} ponownie DOSTĘPNY w bazie", v.State);
+            }
+
+            _totalTimeMs += (int)(DateTime.Now - eventStartTime).TotalMilliseconds;
+
+            Notify($"FAŁSZYWY ALARM — czas od zgłoszenia do powrotu: {(DateTime.Now-eventStartTime).TotalSeconds:F1}s");
+            Notify("---------------------------------------------------------");
+            return;
         }
 
-        vehicleIterator = vehicleCollection.GetIterator();
-        while (vehicleIterator.HasNext())
+        // 4) dotarcie na miejsce
+        foreach (var v in vehicleCollection)
         {
-            var v = vehicleIterator.Next();
+            v.Arrive();
+            Notify($"Pojazd {v.Name} na miejscu zdarzenia", v.State);
+        }
+
+        int actionTimeMs = rand.Next(5000, 25000); // akcja 5-25s
+        Notify($"Akcja gaśnicza potrwa ok. {actionTimeMs / 1000.0:F1}s");
+        await Task.Delay(actionTimeMs);
+
+        // 5) powrót
+        foreach (var v in vehicleCollection)
+        {
+            v.Return();
+            Notify($"Pojazd {v.Name} wraca do jednostki", v.State);
+        }
+
+        int returnTimeMs = rand.Next(1000, 4000);
+        Notify($"Czas powrotu: {returnTimeMs / 1000.0:F1}s");
+        await Task.Delay(returnTimeMs);
+
+        foreach (var v in vehicleCollection)
+        {
             v.Free();
-            Notify($"Pojazd {v.Name} dostępny");
+            Notify($"Pojazd {v.Name} dostępny ponownie", v.State);
         }
+
+        _totalTimeMs += (int)(DateTime.Now - eventStartTime).TotalMilliseconds;
+        Notify($"Zdarzenie zakończone. Czas całkowity: {(DateTime.Now-eventStartTime).TotalSeconds:F1}s");
+        Notify("---------------------------------------------------------");
     }
 
     public void PrintStatistics()

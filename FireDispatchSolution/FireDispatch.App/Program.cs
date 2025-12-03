@@ -18,8 +18,8 @@ internal static class Program
 
         for (int i = 1; i <= 5; i++)
         {
-            unit1.AddVehicle(new Vehicle($"JRG1-V{i}", unit1.Id));
-            unit2.AddVehicle(new Vehicle($"JRG2-V{i}", unit2.Id));
+            unit1.AddVehicle(new Vehicle($"JRG1-V{i}"));
+            unit2.AddVehicle(new Vehicle($"JRG2-V{i}"));
         }
 
         var unitCollection = new UnitCollection();
@@ -31,7 +31,7 @@ internal static class Program
         simulator.Attach(new ConsoleLogger());
 
         var rng = new Random();
-        int eventCount = 10; // liczba zdarzeń
+        int eventCount = 3; // liczba zdarzeń
 
         for (int i = 0; i < eventCount; i++)
         {
@@ -51,4 +51,9 @@ internal static class Program
         simulator.PrintStatistics();
         Console.WriteLine("Symulacja zakończona");
     }
+    
+    /*
+    - sekwencyjne zgłoszenia (nie ma równoległych)
+    - brak wdrążenia Detach(), CommandCenter, UnitObserver, BalancedStrategy, Dispatcher
+    */
 }

@@ -3,7 +3,7 @@
 // Jednostka ratownicza (stacja) zawierająca listę pojazdów i położenie.
 public class Unit(string name, Location location)
 {
-    public Guid Id { get; } = Guid.NewGuid();
+    private Guid Id { get; } = Guid.NewGuid();
     public string Name { get; } = name;
     public Location Location { get; } = location;
 
