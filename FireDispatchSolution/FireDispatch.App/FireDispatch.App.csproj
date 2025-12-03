@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FireDispatch.Collections\FireDispatch.Collections.csproj" />
-      <ProjectReference Include="..\FireDispatch.Context\FireDispatch.Context.csproj" />
       <ProjectReference Include="..\FireDispatch.Interfaces\FireDispatch.Interfaces.csproj" />
       <ProjectReference Include="..\FireDispatch.Models\FireDispatch.Models.csproj" />
       <ProjectReference Include="..\FireDispatch.Observer\FireDispatch.Observer.csproj" />

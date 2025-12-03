@@ -23,4 +23,11 @@ public class UnitCollection : IAggregate<Unit>
             return units[_index++];
         }
     }
+    
+    public IEnumerable<Unit> AsEnumerable()
+    {
+        var iterator = GetIterator();
+        while (iterator.HasNext())
+            yield return iterator.Next();
+    }
 }

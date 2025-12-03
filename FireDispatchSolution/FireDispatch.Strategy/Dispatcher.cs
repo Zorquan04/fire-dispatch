@@ -1,17 +1,28 @@
-﻿using FireDispatch.Interfaces;
-using FireDispatch.Models;
+﻿using FireDispatch.Models;
+using FireDispatch.Interfaces;
+using FireDispatch.Collections;
 
 namespace FireDispatch.Strategy;
-// Dispatcher (kontekst) — używa strategii do wyboru pojazdów.
-public class Dispatcher(IStrategy strategy)
+
+public class Dispatcher(IStrategy strategy, UnitCollection units)
 {
     private IStrategy _strategy = strategy;
 
-    public void SetStrategy(IStrategy strategy) => _strategy = strategy;
+    private void SetStrategy(IStrategy strategy) => _strategy = strategy;
 
-    // Zwraca listę pojazdów wybranych przez strategię
-    public IEnumerable<Vehicle> Dispatch(IEnumerable<Unit> units, Event evt, int requiredCars)
+    public IEnumerable<Vehicle> Dispatch(Event evt, int requiredCount)
     {
-        return _strategy.SelectVehicles(units, evt, requiredCars);
+        var vehicles = _strategy.SelectVehicles(units.AsEnumerable(), evt, requiredCount).ToList();
+
+        // jeśli brak pojazdów i aktualna strategia to NearestFirst → zmień na Balanced
+        if (!vehicles.Any() && _strategy is NearestFirstStrategy)
+        {
+            var balanced = new BalancedStrategy();
+            vehicles = balanced.SelectVehicles(units.AsEnumerable(), evt, requiredCount).ToList();
+            if (vehicles.Any())
+                SetStrategy(balanced);
+        }
+
+        return vehicles;
     }
 }

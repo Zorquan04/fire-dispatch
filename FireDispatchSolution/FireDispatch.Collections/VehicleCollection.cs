@@ -4,13 +4,15 @@ using FireDispatch.Models;
 
 namespace FireDispatch.Collections;
 
-public class VehicleCollection(List<Vehicle> vehicles) : IAggregate<Vehicle>, IEnumerable
+public class VehicleCollection(IEnumerable<Vehicle> vehicles) : IAggregate<Vehicle>, IEnumerable
 {
-    public IIterator<Vehicle> GetIterator() => new VehicleIterator(vehicles);
+    private readonly List<Vehicle> _vehicles = vehicles.ToList();
 
-    public IEnumerator<Vehicle> GetEnumerator()
+    public IIterator<Vehicle> GetIterator() => new VehicleIterator(_vehicles);
+
+    private IEnumerator<Vehicle> GetEnumerator()
     {
-        foreach (var v in vehicles)
+        foreach (var v in _vehicles)
             yield return v;
     }
 

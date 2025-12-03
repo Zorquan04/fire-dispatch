@@ -1,5 +1,4 @@
 ﻿using FireDispatch.Collections;
-using FireDispatch.Context;
 using FireDispatch.Models;
 using FireDispatch.Observer;
 using FireDispatch.Simulation;
@@ -26,12 +25,17 @@ internal static class Program
         unitCollection.Add(unit1);
         unitCollection.Add(unit2);
 
-        var dispatcher = new DispatchContext(new NearestFirstStrategy(), unitCollection);
+        var dispatcher = new Dispatcher(new NearestFirstStrategy(), unitCollection);
         var simulator = new EventSimulator(dispatcher);
-        simulator.Attach(new ConsoleLogger());
+        var consoleLogger = new ConsoleLogger();
+        simulator.Attach(consoleLogger);
+
+        var center = new CommandCenter();
+        center.Attach(new UnitObserver(unit1, simulator, simulator));
+        center.Attach(new UnitObserver(unit2, simulator, simulator));
 
         var rng = new Random();
-        int eventCount = 3; // liczba zdarzeń
+        int eventCount = 5;
 
         for (int i = 0; i < eventCount; i++)
         {
@@ -40,20 +44,16 @@ internal static class Program
             double lon = 19.92 + rng.NextDouble() * 0.02;
 
             var evt = new Event(type, new Location(lat, lon));
-            await simulator.HandleEventAsync(evt);
+            center.NewEvent(evt);
 
-            // losowa przerwa między zdarzeniami 0-3s
             int wait = rng.Next(0, 3000);
             await Task.Delay(wait);
         }
 
-        // po zakończeniu pętli zdarzeń
+        // poczekaj na zakończenie równoległych zadań
+        await Task.Delay(5000); 
         simulator.PrintStatistics();
+        simulator.Detach(consoleLogger);
         Console.WriteLine("Symulacja zakończona");
     }
-    
-    /*
-    - sekwencyjne zgłoszenia (nie ma równoległych)
-    - brak wdrążenia Detach(), CommandCenter, UnitObserver, BalancedStrategy, Dispatcher
-    */
 }

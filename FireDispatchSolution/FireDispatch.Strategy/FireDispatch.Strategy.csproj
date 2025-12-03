@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FireDispatch.Collections\FireDispatch.Collections.csproj" />
       <ProjectReference Include="..\FireDispatch.Interfaces\FireDispatch.Interfaces.csproj" />
       <ProjectReference Include="..\FireDispatch.Models\FireDispatch.Models.csproj" />
     </ItemGroup>
