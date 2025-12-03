@@ -1,4 +1,5 @@
-﻿using FireDispatch.Context;
+﻿using FireDispatch.Collections;
+using FireDispatch.Context;
 using FireDispatch.Models;
 using FireDispatch.Observer;
 using FireDispatch.Simulation;
@@ -6,43 +7,48 @@ using FireDispatch.Strategy;
 
 namespace FireDispatch.App;
 
-// Główny punkt wejścia aplikacji
 internal static class Program
 {
     private static async Task Main()
     {
-        Console.WriteLine("FireDispatch — symulacja pętli zdarzeń");
+        Console.WriteLine("FireDispatch — symulacja zdarzeń losowych\n");
 
-        // Jednostki
         var unit1 = new Unit("JRG-1", new Location(50.05, 19.94));
         var unit2 = new Unit("JRG-2", new Location(50.04, 19.92));
 
         for (int i = 1; i <= 5; i++)
         {
-            unit1.Vehicles.Add(new Vehicle($"JRG1-V{i}", unit1.Id));
-            unit2.Vehicles.Add(new Vehicle($"JRG2-V{i}", unit2.Id));
+            unit1.AddVehicle(new Vehicle($"JRG1-V{i}", unit1.Id));
+            unit2.AddVehicle(new Vehicle($"JRG2-V{i}", unit2.Id));
         }
 
-        var units = new List<Unit> { unit1, unit2 };
-        var dispatcher = new DispatchContext(new NearestFirstStrategy(), units);
+        var unitCollection = new UnitCollection();
+        unitCollection.Add(unit1);
+        unitCollection.Add(unit2);
 
+        var dispatcher = new DispatchContext(new NearestFirstStrategy(), unitCollection);
         var simulator = new EventSimulator(dispatcher);
         simulator.Attach(new ConsoleLogger());
 
-        // Generowanie przykładowych zdarzeń
-        var events = new List<Event>
-        {
-            new (EventType.Pz, new Location(50.045, 19.93)),
-            new (EventType.Mz, new Location(50.048, 19.935)),
-            new (EventType.Af, new Location(50.046, 19.938))
-        };
+        var rng = new Random();
+        int eventCount = 10; // liczba zdarzeń
 
-        // Pętla zdarzeń
-        foreach (var evt in events)
+        for (int i = 0; i < eventCount; i++)
         {
+            EventType type = rng.NextDouble() < 0.7 ? EventType.Mz : EventType.Pz;
+            double lat = 50.04 + rng.NextDouble() * 0.02;
+            double lon = 19.92 + rng.NextDouble() * 0.02;
+
+            var evt = new Event(type, new Location(lat, lon));
             await simulator.HandleEventAsync(evt);
+
+            // losowa przerwa między zdarzeniami 0-3s
+            int wait = rng.Next(0, 3000);
+            await Task.Delay(wait);
         }
 
+        // po zakończeniu pętli zdarzeń
+        simulator.PrintStatistics();
         Console.WriteLine("Symulacja zakończona");
     }
 }

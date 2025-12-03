@@ -4,7 +4,7 @@
 public class Vehicle(string name, Guid unitId)
 {
     private Guid Id { get; } = Guid.NewGuid();
-    public string Name { get; set; } = name;
+    public string Name { get; } = name;
     public VehicleState State { get; private set; } = VehicleState.Free;
     public Guid UnitId { get; set; } = unitId;
 

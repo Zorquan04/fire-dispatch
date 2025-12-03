@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireDispatch.Context", "Fir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireDispatch.Simulation", "FireDispatch.Simulation\FireDispatch.Simulation.csproj", "{C44A0EAF-27DD-4B7E-94FE-295C399D0C2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireDispatch.Collections", "FireDispatch.Collections\FireDispatch.Collections.csproj", "{5508305E-4A7D-47AC-BF37-1CC75EC4913C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{C44A0EAF-27DD-4B7E-94FE-295C399D0C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C44A0EAF-27DD-4B7E-94FE-295C399D0C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C44A0EAF-27DD-4B7E-94FE-295C399D0C2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5508305E-4A7D-47AC-BF37-1CC75EC4913C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5508305E-4A7D-47AC-BF37-1CC75EC4913C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5508305E-4A7D-47AC-BF37-1CC75EC4913C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5508305E-4A7D-47AC-BF37-1CC75EC4913C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
