@@ -5,11 +5,23 @@ public class Vehicle(string name, Guid unitId)
 {
     public Guid Id { get; } = Guid.NewGuid();
     public string Name { get; set; } = name;
-    public VehicleState State { get; set; } = VehicleState.Free; // domyślnie wolny
-    public Guid UnitId { get; set; } = unitId; // identyfikator jednostki macierzystej
-    
-    public override string ToString()
-    {
-        return $"Vehicle {{Id={Id}, Name={Name}, State={State}}}";
-    }
+    public VehicleState State { get; private set; } = VehicleState.Free;
+    public Guid UnitId { get; set; } = unitId;
+
+    // Zmiana stanu pojazdu — przypisanie do zdarzenia
+    public void Assign() => State = VehicleState.Assigned;
+
+    // Pojazd w drodze
+    public void StartTravel() => State = VehicleState.EnRoute;
+
+    // Pojazd dotarł na miejsce
+    public void Arrive() => State = VehicleState.OnScene;
+
+    // Pojazd wraca
+    public void Return() => State = VehicleState.Returning;
+
+    // Pojazd dostępny po powrocie
+    public void Free() => State = VehicleState.Free;
+
+    public override string ToString() => $"Vehicle {{Id={Id}, Name={Name}, State={State}}}";
 }

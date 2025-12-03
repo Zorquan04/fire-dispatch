@@ -19,7 +19,7 @@ public class UnitObserver(Unit unit, DispatchContext dispatcher) : IObserver
         foreach (var v in vehicles)
         {
             Console.WriteLine($"[{unit.Name}] Wysyłam pojazd {v.Name} do zdarzenia {evt.Type}");
-            v.State = VehicleState.Assigned; // zmiana stanu pojazdu
+            v.Assign(); // zmiana stanu pojazdu
         }
     }
 }

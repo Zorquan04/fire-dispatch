@@ -36,5 +36,19 @@ internal static class Program
 
         // Wywołanie zdarzenia – jednostki same wybierają pojazdy i wysyłają
         skkm.NewEvent("Pożar w okolicy Placu Matejki PZ");
+        
+        var vehicle = new Vehicle("JRG1-V1", Guid.NewGuid());
+
+        Console.WriteLine(vehicle); // Free
+        vehicle.Assign();
+        Console.WriteLine(vehicle); // Assigned
+        vehicle.StartTravel();
+        Console.WriteLine(vehicle); // EnRoute
+        vehicle.Arrive();
+        Console.WriteLine(vehicle); // OnScene
+        vehicle.Return();
+        Console.WriteLine(vehicle); // Returning
+        vehicle.Free();
+        Console.WriteLine(vehicle); // Free
     }
 }

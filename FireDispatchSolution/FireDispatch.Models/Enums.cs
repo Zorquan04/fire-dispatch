@@ -11,7 +11,9 @@ public enum EventType
 /// Stan pojazdu — proste etykiety, będziemy rozszerzać później
 public enum VehicleState
 {
-    Free, // pojazd dostępny do dysponowania
-    Assigned, // zadysponowany (wyjazd w toku)
-    Busy // na miejscu działania
+    Free,       // pojazd dostępny
+    Assigned,   // przydzielony do zdarzenia, ale jeszcze nie w drodze
+    EnRoute,    // w drodze na miejsce zdarzenia
+    OnScene,    // na miejscu zdarzenia
+    Returning   // wraca do jednostki
 }
