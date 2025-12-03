@@ -1,14 +1,25 @@
-﻿using FireDispatch.Interfaces;
+﻿using FireDispatch.Context;
+using FireDispatch.Interfaces;
 using FireDispatch.Models;
 
 namespace FireDispatch.Observer;
 
 /// Observer jednostki PSP – reaguje na powiadomienia SKKM
-public class UnitObserver(Unit unit) : IObserver
+/// Teraz przy powiadomieniu może wybrać pojazdy i wysłać je do zdarzenia
+public class UnitObserver(Unit unit, DispatchContext dispatcher) : IObserver
 {
     public void Update(string message)
     {
-        // Prosty log do konsoli — w przyszłości można tu wywołać strategię dysponowania
         Console.WriteLine($"[{unit.Name}] Otrzymano powiadomienie: {message}");
+
+        // Przykładowe zdarzenie powiązane z wiadomością
+        var evt = new Event(EventType.Pz, unit.Location); // dla demo – zdarzenie przy lokalizacji jednostki
+        var vehicles = dispatcher.Strategy.SelectVehicles([unit], evt, 2); // np. 2 pojazdy
+
+        foreach (var v in vehicles)
+        {
+            Console.WriteLine($"[{unit.Name}] Wysyłam pojazd {v.Name} do zdarzenia {evt.Type}");
+            v.State = VehicleState.Assigned; // zmiana stanu pojazdu
+        }
     }
 }

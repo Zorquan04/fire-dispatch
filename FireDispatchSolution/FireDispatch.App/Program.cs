@@ -1,4 +1,5 @@
-﻿using FireDispatch.Models;
+﻿using FireDispatch.Context;
+using FireDispatch.Models;
 using FireDispatch.Observer;
 
 namespace FireDispatch.App;
@@ -21,16 +22,19 @@ internal static class Program
             jrg2.Vehicles.Add(new Vehicle($"JRG2-V{i}", jrg2.Id));
         }
 
+        // Tworzymy kontekst strategii i dispatcher
+        var dispatcher = new DispatchContext(new NearestFirstStrategy(), [jrg1, jrg2]);
+
         // Tworzymy obserwatorów jednostek
-        var observer1 = new UnitObserver(jrg1);
-        var observer2 = new UnitObserver(jrg2);
+        var observer1 = new UnitObserver(jrg1, dispatcher);
+        var observer2 = new UnitObserver(jrg2, dispatcher);
 
         // Tworzymy SKKM (Subject)
         var skkm = new CommandCenter();
         skkm.Attach(observer1);
         skkm.Attach(observer2);
 
-        // Wywołanie zdarzenia
+        // Wywołanie zdarzenia – jednostki same wybierają pojazdy i wysyłają
         skkm.NewEvent("Pożar w okolicy Placu Matejki PZ");
     }
 }

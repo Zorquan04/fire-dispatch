@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireDispatch.Strategy", "Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireDispatch.Observer", "FireDispatch.Observer\FireDispatch.Observer.csproj", "{F9ECE387-758E-4904-AE17-3A4BE9B26CF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireDispatch.Context", "FireDispatch.Context\FireDispatch.Context.csproj", "{D8678291-C59B-4AA8-BB6C-8F9DE5409854}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{F9ECE387-758E-4904-AE17-3A4BE9B26CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9ECE387-758E-4904-AE17-3A4BE9B26CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9ECE387-758E-4904-AE17-3A4BE9B26CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8678291-C59B-4AA8-BB6C-8F9DE5409854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8678291-C59B-4AA8-BB6C-8F9DE5409854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8678291-C59B-4AA8-BB6C-8F9DE5409854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8678291-C59B-4AA8-BB6C-8F9DE5409854}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
