@@ -6,7 +6,7 @@ namespace FireDispatch.Observer;
 // Prosty logger do konsoli
 public class ConsoleLogger : IObserver
 {
-    public void Update(string message, VehicleState? state = null)
+    public void Update(string message, Vehicle? vehicle = null, VehicleState? state = null)
     {
         if (state != null)
         {
@@ -20,11 +20,9 @@ public class ConsoleLogger : IObserver
                 _ => ConsoleColor.White
             };
         }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
+        
+        if (vehicle != null) return;
+        
         Console.WriteLine($"[LOG] {message}");
         Console.ResetColor();
     }

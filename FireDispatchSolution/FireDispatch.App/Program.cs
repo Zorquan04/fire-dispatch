@@ -17,8 +17,8 @@ internal static class Program
 
         for (int i = 1; i <= 5; i++)
         {
-            unit1.AddVehicle(new Vehicle($"JRG1-V{i}"));
-            unit2.AddVehicle(new Vehicle($"JRG2-V{i}"));
+            unit1.AddVehicle(new Vehicle($"JRG1-V{i}", unit1));
+            unit2.AddVehicle(new Vehicle($"JRG2-V{i}", unit2));
         }
 
         var unitCollection = new UnitCollection();
@@ -27,15 +27,16 @@ internal static class Program
 
         var dispatcher = new Dispatcher(new NearestFirstStrategy(), unitCollection);
         var simulator = new EventSimulator(dispatcher);
+
         var consoleLogger = new ConsoleLogger();
         simulator.Attach(consoleLogger);
 
-        var center = new CommandCenter();
-        center.Attach(new UnitObserver(unit1, simulator, simulator));
-        center.Attach(new UnitObserver(unit2, simulator, simulator));
+        // dodajemy obserwatorów jednostek (tylko logowanie)
+        simulator.Attach(new UnitObserver(unit1, consoleLogger));
+        simulator.Attach(new UnitObserver(unit2, consoleLogger));
 
         var rng = new Random();
-        int eventCount = 5;
+        int eventCount = 10;
 
         for (int i = 0; i < eventCount; i++)
         {
@@ -44,14 +45,14 @@ internal static class Program
             double lon = 19.92 + rng.NextDouble() * 0.02;
 
             var evt = new Event(type, new Location(lat, lon));
-            center.NewEvent(evt);
+            _ = simulator.HandleEventAsync(evt);
 
-            int wait = rng.Next(0, 3000);
-            await Task.Delay(wait);
+            // Realistyczny odstęp między zgłoszeniami
+            await Task.Delay(rng.Next(1000, 3000));
         }
 
         // poczekaj na zakończenie równoległych zadań
-        await Task.Delay(5000); 
+        await Task.Delay(30000); // dajemy czas na wszystkie akcje
         simulator.PrintStatistics();
         simulator.Detach(consoleLogger);
         Console.WriteLine("Symulacja zakończona");

@@ -4,5 +4,5 @@ namespace FireDispatch.Interfaces;
 
 public interface IObserver
 {
-    void Update(string message, VehicleState? state = null);
+    void Update(string message, Vehicle? vehicle = null, VehicleState? state = null);
 }

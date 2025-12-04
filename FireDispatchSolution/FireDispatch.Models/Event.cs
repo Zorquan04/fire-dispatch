@@ -3,12 +3,11 @@
 // Reprezentuje zgłoszenie/zdarzenie wpływające do SKKM
 public class Event(EventType type, Location location)
 {
-    private Guid Id { get; } = Guid.NewGuid();
+    private static int _counter;
+
+    private int Id { get; } = Interlocked.Increment(ref _counter);
     public EventType Type { get; } = type;
     public Location Location { get; } = location;
     
-    public override string ToString()
-    {
-        return $"Event {{Id={Id}, Type={Type}, Loc=({Location.Latitude},{Location.Longitude})}}";
-    }
+    public string Label => $"{Type}-{Id}";
 }
