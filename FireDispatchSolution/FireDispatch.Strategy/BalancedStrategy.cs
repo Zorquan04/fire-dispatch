@@ -3,16 +3,25 @@ using FireDispatch.Models;
 
 namespace FireDispatch.Strategy;
 
-// Strategia równoważąca — wybiera pojazdy z jednostki mającej najwięcej wolnych aut.
+// Strategia wyboru pojazdów równoważąca obciążenie jednostek.
+// Wybiera pojazdy z jednostki, która ma najwięcej wolnych aut.
 public class BalancedStrategy : IStrategy
 {
     public IEnumerable<Vehicle> SelectVehicles(IEnumerable<Unit> units, Event evt, int requiredCount)
     {
-        var bestUnit = units.Where(u => u.FreeVehicleCount() > 0).OrderByDescending(u => u.FreeVehicleCount()).FirstOrDefault();
+        // Wybieramy jednostkę z największą liczbą wolnych pojazdów
+        var bestUnit = units
+            .Where(u => u.FreeVehicleCount() > 0)           // tylko jednostki z wolnymi pojazdami
+            .OrderByDescending(u => u.FreeVehicleCount())   // sortowanie malejąco po wolnych pojazdach
+            .FirstOrDefault();                                  // wybieramy pierwszą (najlepszą) jednostkę
 
         if (bestUnit == null)
-            return [];
+            return []; // brak dostępnych pojazdów w żadnej jednostce
 
-        return bestUnit.Vehicles.Where(v => v.State == VehicleState.Free).Take(requiredCount).ToList();
+        // Z tej jednostki wybieramy określoną liczbę wolnych pojazdów
+        return bestUnit.Vehicles
+            .Where(v => v.State == VehicleState.Free)
+            .Take(requiredCount)
+            .ToList();
     }
 }

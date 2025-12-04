@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FireDispatch.Interfaces\FireDispatch.Interfaces.csproj" />
-      <ProjectReference Include="..\FireDispatch.Simulation\FireDispatch.Simulation.csproj" />
     </ItemGroup>
 
 </Project>

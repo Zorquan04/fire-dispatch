@@ -10,6 +10,7 @@
       <ProjectReference Include="..\FireDispatch.Collections\FireDispatch.Collections.csproj" />
       <ProjectReference Include="..\FireDispatch.Interfaces\FireDispatch.Interfaces.csproj" />
       <ProjectReference Include="..\FireDispatch.Models\FireDispatch.Models.csproj" />
+      <ProjectReference Include="..\FireDispatch.Observer\FireDispatch.Observer.csproj" />
       <ProjectReference Include="..\FireDispatch.Strategy\FireDispatch.Strategy.csproj" />
     </ItemGroup>
 
