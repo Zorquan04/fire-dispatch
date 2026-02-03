@@ -1,15 +1,15 @@
 ﻿namespace FireDispatch.Interfaces;
 
-// Interfejs obiektu nadzorującego (Subject) w Observer Pattern
-// Zarządza listą obserwatorów i powiadamia ich o zmianach
+// Interface for the Subject in the Observer Pattern
+// Manages the list of observers and notifies them of changes
 public interface ISubject
 {
-    // Dodanie obserwatora do subskrypcji
+    // Adding a follower to your subscription
     void Attach(IObserver observer);
 
-    // Usunięcie obserwatora
+    // Removing a follower
     void Detach(IObserver observer);
 
-    // Powiadom wszystkich obserwujących o zmianie
+    // Notify all followers of the change
     void Notify(string message);
 }

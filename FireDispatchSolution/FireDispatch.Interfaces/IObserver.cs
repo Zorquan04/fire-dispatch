@@ -2,13 +2,13 @@
 
 namespace FireDispatch.Interfaces;
 
-// Interfejs obserwatora we wzorcu Observer
-// Obiekty implementujące go mogą reagować na powiadomienia
+// Observer interface in the Observer pattern
+// Objects implementing it can respond to notifications
 public interface IObserver
 {
-    // Update wywoływany przy Notify()
-    // message – komunikat o zdarzeniu
-    // vehicle – opcjonalna referencja pojazdu (np. zmiana stanu)
-    // state – nowy stan pojazdu
+    // Update called by Notify()
+    // message – event message
+    // vehicle – optional vehicle reference (e.g., state change)
+    // state – new vehicle state
     void Update(string message, Vehicle? vehicle = null, VehicleState? state = null);
 }

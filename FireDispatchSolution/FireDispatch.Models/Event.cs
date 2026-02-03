@@ -1,21 +1,21 @@
 ﻿namespace FireDispatch.Models;
 
-// Model pojedynczego zgłoszenia przychodzącego do systemu
-// Posiada typ zdarzenia (np. pożar / miejscowe zagrożenie) oraz lokalizację
+// Model of a single incoming report
+// Contains an event type (e.g., fire/local threat) and location
 public class Event(EventType type, Location location)
 {
-    // Globalny licznik zdarzeń – każde nowe zgłoszenie dostaje kolejny numer
+    // Global event counter – each new report gets a consecutive number
     private static int _counter;
 
-    // Unikalne ID zdarzenia nadawane automatycznie w sposób atomowy (bezpieczny dla wielu wątków)
+    // Unique event ID automatically assigned in an atomic manner (thread-safe)
     private int Id { get; } = Interlocked.Increment(ref _counter);
 
-    // Rodzaj zdarzenia (Enum)
+    // Event Type (Enum)
     public EventType Type { get; } = type;
 
-    // Miejsce wystąpienia
+    // Place of occurrence
     public Location Location { get; } = location;
 
-    // Etykieta pomocnicza np. "Pz-4" – dobre do logów/identyfikacji zdarzeń
+    // Auxiliary label e.g. "Pz-4" - good for logging/event identification
     public string Label => $"{Type}-{Id}";
 }

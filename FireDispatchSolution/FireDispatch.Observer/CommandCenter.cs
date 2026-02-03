@@ -3,33 +3,33 @@ using FireDispatch.Models;
 
 namespace FireDispatch.Observer;
 
-// Centrum dowodzenia (SKKM) pełni funkcję Subject w wzorcu Observer
-// Odbiera nowe zgłoszenia i rozsyła informacje do wszystkich obserwatorów (loggerów, unitów itp.)
+// The Command Center (SKKM) serves as the Subject in the Observer pattern.
+// Receives new reports and distributes information to all observers (loggers, units, etc.)
 public class CommandCenter : ISubject
 {
-    // Lista podłączonych obserwatorów (np. logger, UnitObserver)
+    // List of connected observers (e.g. logger, UnitObserver)
     private readonly List<IObserver> _observers = new();
 
-    // Dodanie obserwatora
+    // Adding a follower
     public void Attach(IObserver observer) => _observers.Add(observer);
 
-    // Usunięcie obserwatora
+    // Removing a follower
     public void Detach(IObserver observer) => _observers.Remove(observer);
 
-    // Wysyłanie komunikatu do wszystkich obserwatorów
+    // Sending a message to all followers
     public void Notify(string message)
     {
         foreach (var obs in _observers)
             obs.Update("[SKKM] " + message);
     }
 
-    // Wywoływane, gdy pojawi się nowe zdarzenie w systemie
+    // Triggered when a new event occurs in the system
     public void NewEvent(Event evt)
     {
-        // Informacja na konsoli o przyjęciu zgłoszenia
-        Console.WriteLine($"[SKKM] Nowe zgłoszenie: {evt.Label} | {evt.Type} | ({evt.Location.Latitude:F5}, {evt.Location.Longitude:F5})");
+        // Information on the console about the acceptance of the application
+        Console.WriteLine($"[SKKM] New report: {evt.Label} | {evt.Type} | ({evt.Location.Latitude:F5}, {evt.Location.Longitude:F5})");
 
-        // Rozesłanie informacji do obserwatorów
-        Notify($"Zgłoszenie przyjęte: {evt.Label}");
+        // Distribution of information to observers
+        Notify($"Report accepted: {evt.Label}");
     }
 }

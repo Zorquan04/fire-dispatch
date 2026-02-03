@@ -3,16 +3,16 @@ using FireDispatch.Interfaces;
 
 namespace FireDispatch.Observer;
 
-// Obserwator nasłuchujący zmian dotyczących konkretnej jednostki straży
-// Filtruje tylko komunikaty powiązane z jej pojazdami
+// Observer that listens for changes related to a specific fire department
+// Filters only messages related to its vehicles
 public class UnitObserver(Unit unit, IObserver logger) : IObserver
 {
     public void Update(string message, Vehicle? vehicle = null, VehicleState? state = null)
     {
-        // Logujemy tylko, jeśli zdarzenie dotyczy pojazdu z tej jednostki
+        // We only log if the event concerns a vehicle from this unit
         if (vehicle != null && vehicle.Unit == unit)
         {
-            // Przekazujemy komunikat dalej do loggera (najczęściej ConsoleLogger)
+            // We pass the message on to the logger (usually ConsoleLogger)
             logger.Update($"[{unit.Name}] {message}", null, state);
         }
     }

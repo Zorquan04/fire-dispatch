@@ -1,9 +1,9 @@
 ﻿namespace FireDispatch.Interfaces;
 
-// Interfejs kolekcji wspierającej Iterator Pattern
-// out T = covariance -> pozwala zwracać typ dziedziczący po T
+// Interface for a collection supporting Iterator Pattern
+// out T = covariance -> allows you to return a type that inherits from T
 public interface IAggregate<out T>
 {
-    // Tworzy i zwraca iterator obsługujący poruszanie się po kolekcji
+    // Creates and returns an iterator that supports traversing a collection.
     IIterator<T> GetIterator();
 }

@@ -1,10 +1,10 @@
 ﻿namespace FireDispatch.Interfaces;
 
-// Interfejs iteratora – definiuje sposób przechodzenia po kolekcji
+// Iterator interface – defines how to traverse a collection
 public interface IIterator<out T>
 {
-    // Czy jest kolejny element?
+    // Is there another element?
     bool HasNext();
-    // Pobiera następny element kolekcji
+    // Gets the next element in the collection
     T Next();
 }

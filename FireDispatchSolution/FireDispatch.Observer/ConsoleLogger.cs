@@ -3,12 +3,12 @@ using FireDispatch.Models;
 
 namespace FireDispatch.Observer;
 
-// Prosty obserwator - wypisuje komunikaty na konsolę
+// Simple observer - prints messages to the console
 public class ConsoleLogger : IObserver
 {
     public void Update(string message, Vehicle? vehicle = null, VehicleState? state = null)
     {
-        // Jeśli przyszła informacja o stanie pojazdu, zmieniamy kolor logu
+        // If information about the vehicle's condition has arrived, we change the color of the log
         if (state != null)
         {
             Console.ForegroundColor = state switch
@@ -22,10 +22,10 @@ public class ConsoleLogger : IObserver
             };
         }
         
-        // Jeśli w komunikacie pojazd jest podany, log obsłuży UnitObserver
+        // If a vehicle is specified in the message, the log will handle UnitObserver
         if (vehicle != null) return;
         
-        // Wypisanie komunikatu w logu
+        // Writing a message to the log
         Console.WriteLine($"[LOG] {message}");
         Console.ResetColor();
     }

@@ -1,9 +1,9 @@
 ﻿namespace FireDispatch.Models;
 
-// Reprezentuje położenie w stopniach dziesiętnych (WGS-84)
+// Represents the position in decimal degrees (WGS-84)
 public record Location(double Latitude, double Longitude)
 {
-// Prosta metoda na obliczenie przybliżonej odległości euklidesowej w stopniach
+// A simple method to calculate approximate Euclidean distance in degrees
     public double DistanceTo(Location other)
     {
         var dLat = Latitude - other.Latitude;

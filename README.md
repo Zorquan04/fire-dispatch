@@ -48,12 +48,14 @@ After starting, simulation logs will appear in the console.
 
 ## Sample log:
 ```
-[LOG] --- NOWE ZDARZENIE: Pz-1 ---
-[LOG] Lokalizacja: 50,04267, 19,93776
-[LOG] [JRG-1] Pojazd JRG1-V1 przypisany do zdarzenia Pz-1
-[LOG] [JRG-1] Pojazd JRG1-V2 przypisany do zdarzenia Pz-1
-[LOG] [JRG-1] Pojazd JRG1-V3 przypisany do zdarzenia Pz-1
-[LOG] [JRG-1] Pojazd JRG1-V1 w drodze do zdarzenia Pz-1
-[LOG] Czas dojazdu pojazdu JRG1-V1: 2,9s
+[SKKM] New report: Pz-1 | Pz | (50,05759, 19,92713)
+[LOG] [SKKM] Report accepted: Pz-1
+[LOG] --- NEW REPORT: Pz-1 ---
+[LOG] Location: 50,05759, 19,92713
+[LOG] [JRG-1] Vehicle JRG1-V1 assigned to an report Pz-1
+[LOG] [JRG-1] Vehicle JRG1-V2 assigned to an report Pz-1
+[LOG] [JRG-1] Vehicle JRG1-V3 assigned to an report Pz-1
+[LOG] [JRG-1] Vehicle JRG1-V1 on the way to the report Pz-1
+[LOG] Vehicle arrival time JRG1-V1: 1,8s
 ...
 ```

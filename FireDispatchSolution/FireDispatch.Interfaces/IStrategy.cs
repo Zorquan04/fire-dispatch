@@ -2,12 +2,12 @@
 
 namespace FireDispatch.Interfaces;
 
-// Interfejs strategii dysponowania.
-// Implementacje zwracają listę pojazdów do zadysponowania dla danego zdarzenia.
+// Dispatch strategy interface.
+// Implementations return a list of vehicles to be dispatched for a given event.
 public interface IStrategy
 {
-    // Wyznacza pojazdy do dysponowania dla zdarzenia.
-    // Parametry: lista jednostek, zdarzenie, liczba wymaganych pojazdów.
-    // Zwraca listę pojazdów w kolejności przypisania.
+    // Designates vehicles to be dispatched for the event.
+    // Parameters: unit list, event, number of required vehicles.
+    // Returns a list of vehicles in the order they were assigned.
     IEnumerable<Vehicle> SelectVehicles(IEnumerable<Unit> units, Event evt, int requiredCount);
 }

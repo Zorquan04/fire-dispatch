@@ -1,6 +1,6 @@
 ﻿namespace FireDispatch.Models;
 
-// Reprezentuje pojazd ratowniczy. Pojazdy należą do jednostki (UnitId).
+// Represents a rescue vehicle. Vehicles belong to a unit (UnitId).
 public class Vehicle(string name, Unit unit)
 {
     private Guid Id { get; } = Guid.NewGuid();
@@ -8,19 +8,19 @@ public class Vehicle(string name, Unit unit)
     public VehicleState State { get; private set; } = VehicleState.Free;
     public Unit Unit { get; } = unit;
 
-    // Zmiana stanu pojazdu — przypisanie do zdarzenia
+    // Vehicle status change - event assignment
     public void Assign() => State = VehicleState.Assigned;
 
-    // Pojazd w drodze
+    // Vehicle on the way
     public void StartTravel() => State = VehicleState.EnRoute;
 
-    // Pojazd dotarł na miejsce
+    // The vehicle arrived at the site
     public void Arrive() => State = VehicleState.OnScene;
 
-    // Pojazd wraca
+    // The vehicle is returning
     public void Return() => State = VehicleState.Returning;
 
-    // Pojazd dostępny po powrocie
+    // Vehicle available upon return
     public void Free() => State = VehicleState.Free;
 
     public override string ToString() => $"Vehicle {{Id={Id}, Name={Name}, State={State}}}";

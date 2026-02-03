@@ -5,24 +5,24 @@ namespace FireDispatch.Collections;
 
 public class UnitCollection : IAggregate<Unit>
 {
-    // Przechowuje listę jednostek straży pożarnej
+    // Maintains a list of fire departments
     private readonly List<Unit> _units = new();
 
-    // Dodawanie jednostki do kolekcji
+    // Adding a unit to the collection
     public void Add(Unit unit) => _units.Add(unit);
 
-    // Zwraca iterator umożliwiający iterację po jednostkach bez ujawniania implementacji listy
+    // Returns an iterator that allows iterating over entities without revealing the implementation of the list
     public IIterator<Unit> GetIterator() => new UnitIterator(_units);
 
-    // Wewnętrzna klasa iteratora operująca na liście jednostek
+    // Inner iterator class that operates on a list of entities
     private class UnitIterator(List<Unit> units) : IIterator<Unit>
     {
         private int _index;
 
-        // Sprawdza, czy istnieje kolejny element w kolekcji
+        // Checks if there is another item in the collection
         public bool HasNext() => _index < units.Count;
 
-        // Zwraca kolejną jednostkę, przesuwając wskaźnik iteratora
+        // Returns the next unit by moving the iterator pointer
         public Unit Next()
         {
             if (!HasNext()) throw new InvalidOperationException("No more units.");
@@ -30,7 +30,7 @@ public class UnitCollection : IAggregate<Unit>
         }
     }
     
-    // Wygodna metoda umożliwiająca iterowanie foreach bez ręcznego odwoływania do iteratora
+    // A convenient method to iterate through foreach without manually referencing the iterator.
     public IEnumerable<Unit> AsEnumerable()
     {
         var iterator = GetIterator();
